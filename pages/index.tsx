@@ -8,13 +8,14 @@ import type {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next";
+import Slider from "components/Slider";
 import { HomeContainer } from "styles/HomeStyles";
-import type { TrendingTypes } from "Types/HomePage";
+import type { NowPlaying } from "Types/HomePage";
 
 interface Props {
   data: {
     page: number;
-    results: TrendingTypes[];
+    results: NowPlaying[];
     total_pages: number;
     total_results: number;
   };
@@ -25,25 +26,21 @@ const Home: NextPage<Props> = () => {
   // We access the cached data for the specific key on cache here if its prefetch on server
   // otherwise it will call to fetch data on client.
   const { data } = useReactQuery<Props>({
-    key: "trending",
+    key: "now-playing",
     method: "GET",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/trending/all/week`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/movie/now_playing?${process.env.NEXT_PUBLIC_LANG}&page=1`,
   });
 
-  const backdrop = `https://image.tmdb.org/t/p/original/${data?.data.results[0].backdrop_path}`;
+  console.log(data);
 
   return (
-    <HomeContainer src={backdrop}>
+    <HomeContainer>
       <Head>
-        <title>Movie Database</title>
-        <meta name="description" content="International movie DB" />
+        <title>Movie Database - Home</title>
+        <meta name="description" content="Maxtsh - Movie Database Home" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ul>
-        {data?.data?.results?.map((res: TrendingTypes) => (
-          <li key={res.id}>{res.title}</li>
-        ))}
-      </ul>
+      <Slider />
     </HomeContainer>
   );
 };
@@ -53,10 +50,10 @@ export const getServerSideProps: GetServerSideProps = async (
 ): Promise<GetServerSidePropsResult<any>> => {
   // Prefetching Data using QueryClient and React Query PreFetching
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery("trending", () =>
+  await queryClient.prefetchQuery("now-playing", () =>
     Api({
       method: "GET",
-      url: `${process.env.BASE_URL}/trending/all/week`,
+      url: `${process.env.BASE_URL}/movie/now_playing?${process.env.LANG}&page=1`,
     })
   );
 

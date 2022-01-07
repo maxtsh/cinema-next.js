@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
 
   :root {
     /** Colors */
-    --pm-black: #1f263e;
+    --pm-black: 31,38,62;
     --pm-error:#ff0033;
     --white: #ffffff;
     --black: #000000;

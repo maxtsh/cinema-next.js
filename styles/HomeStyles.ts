@@ -1,15 +1,7 @@
 import styled from "styled-components";
 
-interface HomeContainerProps {
-  src: string;
-}
-
-export const HomeContainer = styled.main<HomeContainerProps>`
+export const HomeContainer = styled.main`
+  position: relative;
   width: 100%;
-  height: 100vh;
-  background: ${(p) => `url(${p.src})`};
-  background-size: cover;
-  background-position: top;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  min-height: 100vh;
 `;
